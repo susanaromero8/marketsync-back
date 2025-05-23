@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const sequelize = require("./src/config/db");
 require("dotenv").config();
 
 const productsRoutes = require("./src/routes/products.routes");
@@ -11,8 +12,8 @@ const app = express();
 // Habilita CORS para permitir conexión con el frontend en localhost:5173
 app.use(
   cors({
-    origin: "http://localhost:5173", 
-    credentials: true, 
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
@@ -40,6 +41,14 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 //Servidor
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en puerto ${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Conexión a PostgreSQL establecida.");
+    // await sequelize.sync();
+  } catch (err) {
+    console.error("❌ Error de conexión:", err);
+  }
+
+  console.log(`🛒 Mock API corriendo en http://localhost:${PORT}`);
 });

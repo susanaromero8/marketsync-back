@@ -67,11 +67,24 @@ NODE_ENV=development
 ### 4. Inicializa la base de datos
 
 ```bash
-npx sequelize-cli db:create
-npx sequelize-cli db:migrate
+npx sequelize-cli db:create --config ./src/config/config.js
 ```
 
-### 5. Ejecuta el seeder (opcional, para datos de prueba)
+### 5. Crea las tablas en la base de datos
+
+Puedes habilitar la creación automática de tablas descomentando la línea en `index.js`:
+
+```js
+// await sequelize.sync();
+```
+
+Luego ejecuta:
+
+```bash
+node index.js
+```
+
+### 6. Ejecuta el seeder (opcional, para datos de prueba)
 
 ```bash
 node src/seeder.js
@@ -79,7 +92,7 @@ node src/seeder.js
 
 Esto insertará productos de prueba en la base de datos que puedes consultar a través de los endpoints.
 
-### 6. Ejecuta el servidor
+### 7. Ejecuta el servidor
 
 ```bash
 npm run dev
